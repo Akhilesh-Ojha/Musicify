@@ -44,7 +44,8 @@ passport.use(new GoogleStrategy({
     },
     function (request, accessToken, refreshToken, profile, done) {
         console.log("user google", profile);
-        User.findOne({u_oauth_id: profile.id}, function (err, user) {
+        console.log(refreshToken);
+        User.findOne({u_oAuth_id: profile.id}, function (err, user) {
             if (err) {
                 console.log(err);  // handle errors!
             }
@@ -89,8 +90,9 @@ app.get('/auth/google',
     passport.authenticate('google', {
             scope: [
                 'https://www.googleapis.com/auth/plus.login',
-                'https://www.googleapis.com/auth/plus.profile.emails.read'
-            ]
+                'https://www.googleapis.com/auth/plus.profile.emails.read']
+            // accessType: 'offline',
+            // approvalPrompt: 'force'
         }
     ));
 app.get('/auth/google/callback',
@@ -100,7 +102,7 @@ app.get('/auth/google/callback',
     });
 
 app.get('/account', ensureAuthenticated, function (req, res) {
-    res.render('account', {user: req.user});
+    res.render('account');
 });
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
