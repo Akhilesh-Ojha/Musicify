@@ -10,7 +10,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
 
-mongoose.connect('mongodb://localhost/musicify',{
+mongoose.connect('mongodb://localhost/MusicifyDB',{
     useMongoClient: true
 }, function (err, db) {
     if(err){

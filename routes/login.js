@@ -44,16 +44,17 @@ passport.use(new GoogleStrategy({
     },
     function (request, accessToken, refreshToken, profile, done) {
         console.log("user google", profile);
-        User.findOne({u_oauth_id: profile.id}, function (err, user) {
+        console.log("Access Token", refreshToken);
+        User.findOne({oAuth_id: profile.id}, function (err, user) {
             if (err) {
                 console.log(err);  // handle errors!
             }
-            if (!err && user !== null) {
+            else if (!err && user !== null) {
                 done(null, user);
             } else {
                 user = new User({
                     provider: profile.provider,
-                    u_oAuth_id: profile.id,
+                    oAuth_id: profile.id,
                     firstName: profile.name.givenName,
                     lastName: profile.name.familyName,
                     email: profile.email,
@@ -78,9 +79,12 @@ passport.serializeUser(function (user, done) {
     done(null, user._id);
 });
 passport.deserializeUser(function (id, done) {
+    console.log("In deserializeUser-- ");
     User.findById(id, function (err, user) {
-        console.log(user);
-        if (!err) done(null, user);
+        console.log("After deserializing-- " + user);
+        if (!err) {
+            done(null, user);
+        }
         else done(err, null);
     });
 });
@@ -93,21 +97,16 @@ app.get('/auth/google',
             ]
         }
     ));
+
 app.get('/auth/google/callback',
-    passport.authenticate('google', {failureRedirect: '/'}),
-    function (req, res) {
-        res.redirect('/account');
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function(req, res) {
+        res.redirect('/profile');
     });
 
-app.get('/account', ensureAuthenticated, function (req, res) {
-    res.render('account', {user: req.user});
-});
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/');
-}
+
+
+
 
 
 module.exports =app;
