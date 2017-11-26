@@ -8,7 +8,14 @@ var UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     email: String,
-    createdAt: Date
+    createdAt: Date,
+    accessToken : String,
+    refreshToken : {
+        access_token: String,
+        expires_in : Number,
+        id_token : String,
+        token_type : String
+    }
 });
 
 

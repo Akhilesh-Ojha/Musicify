@@ -6,8 +6,10 @@ var passport = require('passport');
 //var config = require('./oAuth');
 var User = require("../models/user");
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
-
 var mongoose = require('mongoose');
+var google = require('googleapis');
+var OAuth2 = google.auth.OAuth2;
+//google auth variables
 
 var clientID = '364964255074-417gn90l0c4d8bs7m3lfpav06bh540ds.apps.googleusercontent.com';
 var clientSecret = 'Ryb2MG-eFizzsH6pz5gKxO_b';
@@ -31,20 +33,22 @@ app.use(require('express-session')({
     saveUninitialized: true
 }));
 
-
 app.use(passport.initialize());
 app.use(passport.session());
 
 
 /*Strategy setup for Google oAuth2*/
+
+
 passport.use(new GoogleStrategy({
         clientID: clientID,
         clientSecret: clientSecret,
         callbackURL: callbackURL
     },
-    function (request, accessToken, refreshToken, profile, done) {
+    function (accessToken,rand, refreshToken, profile, done) {
         console.log("user google", profile);
-        console.log("Access Token", refreshToken);
+        console.log("Access Token", accessToken);
+        console.log("refres", refreshToken);
         User.findOne({oAuth_id: profile.id}, function (err, user) {
             if (err) {
                 console.log(err);  // handle errors!
@@ -59,7 +63,9 @@ passport.use(new GoogleStrategy({
                     lastName: profile.name.familyName,
                     email: profile.email,
                     image: profile._json.image.url,
-                    createdAt: Date.now()
+                    createdAt: Date.now(),
+                    accessToken: accessToken,
+                    refreshToken: refreshToken
                 });
                 user.save(function (err) {
                     if (err) {
@@ -75,13 +81,10 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.serializeUser(function (user, done) {
-    console.log('serializeUser: ' + user._id);
     done(null, user._id);
 });
 passport.deserializeUser(function (id, done) {
-    console.log("In deserializeUser-- ");
     User.findById(id, function (err, user) {
-        console.log("After deserializing-- " + user);
         if (!err) {
             done(null, user);
         }
@@ -93,9 +96,11 @@ app.get('/auth/google',
     passport.authenticate('google', {
             scope: [
                 'https://www.googleapis.com/auth/plus.login',
-                'https://www.googleapis.com/auth/plus.profile.emails.read']
-            // accessType: 'offline',
-            // approvalPrompt: 'force'
+                'https://www.googleapis.com/auth/plus.profile.emails.read',
+                'https://www.googleapis.com/auth/youtube.readonly'
+            ],
+            accessType: 'offline'
+            //approvalPrompt: 'force'
         }
     ));
 
@@ -103,12 +108,48 @@ app.get('/auth/google',
 app.get('/auth/google/callback',
     passport.authenticate('google', {failureRedirect: '/login'}),
     function (req, res) {
-        res.redirect('/profile');
+        res.redirect('/login/profile');
     });
 
-// app.get("/profile", middleware.ensureAuthenticated, function (req, res) {
-//         res.render("profile", {user: req.user});
-//
-// });
+app.get("/profile", middleware.ensureAuthenticated, function (req, res) {
+    var oauth2Client = new OAuth2(
+        clientID,
+        clientSecret,
+        callbackURL
+    );
+
+    oauth2Client.credentials = {
+        access_token: req.user.accessToken
+
+    };
+
+    google.youtube({
+        version: 'v3',
+        auth: oauth2Client
+    }).subscriptions.list({
+        part: 'snippet',
+        mine: true,
+        headers: {}
+    }, function(err, data, response) {
+        if (err) {
+            console.error('Error: ' + err);
+            res.json({
+                status: "error"
+            });
+        }
+        if (data) {
+            console.log(data);
+            res.json({
+                status: "ok",
+                data: data
+            });
+        }
+        if (response) {
+            console.log('Status code: ' + response.statusCode);
+        }
+    });
+
+
+});
 
 module.exports = app;
