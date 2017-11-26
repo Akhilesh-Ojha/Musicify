@@ -2,6 +2,7 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var middleware = require('../middlewares/index');
 //var config = require('./oAuth');
 var User = require("../models/user");
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
@@ -42,9 +43,10 @@ passport.use(new GoogleStrategy({
         clientSecret:clientSecret,
         callbackURL: callbackURL
     },
-    function (request, accessToken, refreshToken, profile, done) {
+    function (accessToken, refreshToken, profile, done) {
         console.log("user google", profile);
-        console.log("Access Token", refreshToken);
+        console.log("Access Token", accessToken);
+        console.log("Refresh Token", refreshToken);
         User.findOne({oAuth_id: profile.id}, function (err, user) {
             if (err) {
                 console.log(err);  // handle errors!
@@ -75,13 +77,13 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.serializeUser(function (user, done) {
-    console.log('serializeUser: ' + user._id);
+    console.log('\nserializeUser: ' + user._id);
     done(null, user._id);
 });
 passport.deserializeUser(function (id, done) {
     console.log("In deserializeUser-- ");
     User.findById(id, function (err, user) {
-        console.log("After deserializing-- " + user);
+        console.log("\nAfter deserializing-- " + user);
         if (!err) {
             done(null, user);
         }
@@ -106,6 +108,18 @@ app.get('/auth/google/callback',
 
 
 
+
+
+/*
+function ensureAuthenticated (req, res, next) {
+    console.log("In is ensureAuthenticated");
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    console.log('Not authenticated');
+    res.redirect('/login');
+};
+*/
 
 
 

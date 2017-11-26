@@ -6,9 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var index = require('./routes/index');
 var users = require('./routes/users');
+var index = require('./routes/index');
 var login = require('./routes/login');
+
+
 
 mongoose.connect('mongodb://localhost/MusicifyDB',{
     useMongoClient: true
