@@ -1,13 +1,11 @@
 var middlewareObj = {};
 
 middlewareObj.ensureAuthenticated = function(req, res, next) {
-    if (req.isAuthenticated()) {
-        console.log("\nIn is AUNTHENTICATED\n")
+    if (req.user) {
+        console.log("In is ensureAuthenticated");
         return next();
     }
-    console.log("\nNOT AUNTHENTICATED!\n");
     res.redirect('/login');
 };
 
 module.exports = middlewareObj;
-

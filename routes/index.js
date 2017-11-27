@@ -1,72 +1,57 @@
 var express = require('express');
 var middleware = require('../middlewares/index');
-var User = require('../models/user');
-var passport = require('passport');
-
-
-var app = express();
-
+var keys = require('../config/keys');
+var router = express.Router();
+var google = require('googleapis');
+var OAuth2 = google.auth.OAuth2;
 
 /* GET home page. */
-app.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', function (req, res, next) {
+    res.render('index', {title: 'Express'});
 });
 
-app.get('/login', function (req,res) {
-   res.render('login');
+router.get('/login', function (req, res) {
+    res.render('login');
 });
 
-console.log("\n" + middleware.ensureAuthenticated + "\n");
+router.get('/profile',middleware.ensureAuthenticated, function (req, res) {
+    var oauth2Client = new OAuth2(
+        keys.google.clientID,
+        keys.google.clientSecret ,
+        keys.google.callBackURL
+    );
 
-app.get('/profile', middleware.ensureAuthenticated, function(req, res) {
-    User.findById(req.session.passport.user, function (err, user) {
+    oauth2Client.credentials = {
+        access_token: req.user.accessToken,
+        refresh_token : req.user.refreshToken
+    };
+    console.log("cred", req.user.accessToken);
+    google.youtube({
+        version: 'v3',
+        auth: oauth2Client
+    }).subscriptions.list({
+        part: 'snippet',
+        mine: true,
+        headers: {}
+    }, function(err, data, response) {
         if (err) {
-            console.log(err);
+            console.error('Error: ' + err);
+            res.json({
+                status: "error"
+            });
         }
-        else {
-            res.render("profile", {user: user});
+        if (data) {
+            console.log(data);
+            res.json({
+                status: "ok",
+                data: data
+            });
+        }
+        if (response) {
+            console.log('Status code: ' + response.statusCode);
         }
     });
+
 });
-
-
-
-
-
-
-
-
-
-
-/*
-app.get('/profile', ensureAuthenticated, function(req, res) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            res.render("profile", {user: req.user});
-        }
-});
-*/
-
-
-/*
-
-function ensureAuthenticated (req, res, next) {
-    console.log("In is ensureAuthenticated");
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    console.log('Not authenticated');
-    res.redirect('/login');
-};
-*/
-
-
-
-
-
-
-
-module.exports = app;
+module.exports = router;
 
