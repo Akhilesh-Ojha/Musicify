@@ -1,7 +1,7 @@
 var middlewareObj = {};
 
 middlewareObj.ensureAuthenticated = function(req, res, next) {
-    if (req.isAuthenticated()) {
+    if (req.user) {
         console.log("In is ensureAuthenticated");
         return next();
     }

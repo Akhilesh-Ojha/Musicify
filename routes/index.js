@@ -1,24 +1,57 @@
 var express = require('express');
-var middleware = require('../routes/login');
-var app = express();
+var middleware = require('../middlewares/index');
+var keys = require('../config/keys');
+var router = express.Router();
+var google = require('googleapis');
+var OAuth2 = google.auth.OAuth2;
 
 /* GET home page. */
-app.get('/', function (req, res, next) {
+router.get('/', function (req, res, next) {
     res.render('index', {title: 'Express'});
 });
 
-app.get('/login', function (req, res) {
+router.get('/login', function (req, res) {
     res.render('login');
 });
 
-app.get('/profile',ensureAuthenticated, function (req, res) {
-    console.log("middle", middleware.ensureAuthenticated);
-    res.render("profile", {user: req.user});
+router.get('/profile',middleware.ensureAuthenticated, function (req, res) {
+    var oauth2Client = new OAuth2(
+        keys.google.clientID,
+        keys.google.clientSecret ,
+        keys.google.callBackURL
+    );
+
+    oauth2Client.credentials = {
+        access_token: req.user.accessToken,
+        refresh_token : req.user.refreshToken
+    };
+    console.log("cred", req.user.accessToken);
+    google.youtube({
+        version: 'v3',
+        auth: oauth2Client
+    }).subscriptions.list({
+        part: 'snippet',
+        mine: true,
+        headers: {}
+    }, function(err, data, response) {
+        if (err) {
+            console.error('Error: ' + err);
+            res.json({
+                status: "error"
+            });
+        }
+        if (data) {
+            console.log(data);
+            res.json({
+                status: "ok",
+                data: data
+            });
+        }
+        if (response) {
+            console.log('Status code: ' + response.statusCode);
+        }
+    });
 
 });
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
-    res.redirect('/login')
-}
-module.exports = app;
+module.exports = router;
 
