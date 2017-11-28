@@ -166,3 +166,15 @@ body {
         color: #f05f40
     }
 }
+
+#search-area i {
+    width: 30px;
+    height: 40px;
+    background-color: #fff;
+}
+
+#output {
+    margin-top: 20px;
+    color: #fff;
+    font-size: 20px;
+}

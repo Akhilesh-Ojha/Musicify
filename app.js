@@ -14,7 +14,7 @@ var authRoutes = require('./routes/auth');
 var app = express();
 
 app.use(cookieSession({
-    maxAge : 24*60*60*1000,
+    maxAge : 1000 * 60 * 60 * 60,
     keys : [keys.session.cookieKey]
 }));
 
