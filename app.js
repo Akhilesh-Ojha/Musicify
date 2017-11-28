@@ -1,11 +1,13 @@
 var express = require('express');
 var path = require('path');
 var cookieSession = require('cookie-session');
+var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var passportSetup = require('./config/passport-setup');
 var keys = require('./config/keys');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+
 
 var indexRoutes = require('./routes/index');
 var usersRoutes = require('./routes/users');
@@ -17,6 +19,8 @@ app.use(cookieSession({
     maxAge : 24*60*60*1000,
     keys : [keys.session.cookieKey]
 }));
+
+app.use(cookieParser());
 
 //initialese passport
 app.use(passport.initialize());
@@ -49,6 +53,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+
 
 
 

@@ -6,5 +6,9 @@ module.exports = {
     },
     session : {
         cookieKey : "agam"
+    },
+    crypto: {
+        algorithm : 'aes-256-cbc',
+        key : 'musicifypass'
     }
 };

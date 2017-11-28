@@ -2,6 +2,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 const User = require('../models/user');
 const keys = require('./keys');
+const encryption = require('./encryption');
 
 
 passport.serializeUser(function (user, done) {
@@ -23,9 +24,9 @@ passport.use(
             clientSecret: keys.google.clientSecret,
             callbackURL: keys.google.callbackURL
         }, function (accessToken, rand, refreshToken, profile, done) {
-            console.log("user google", profile);
-            console.log("Access Token", accessToken);
-            console.log("refresh", refreshToken);
+            console.log("User Google----\n", profile);
+            console.log("Access Token---\n", accessToken);
+            console.log("Refresh Token----\n", refreshToken);
             if (profile.name) {
                 firstName = profile.name.givenName;
                 lastName = profile.name.familyName;
@@ -62,7 +63,8 @@ passport.use(
                         email: profile.email,
                         image: profile._json.image.url,
                         createdAt: Date.now(),
-                        accessToken: accessToken,
+                        musicifyAccessToken: encryption.encrypt(profile.id),
+                        accessToken: encryption.encrypt(accessToken),
                         refreshToken: refreshToken
                     });
                     user.save(function (err, newUser) {

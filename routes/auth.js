@@ -18,8 +18,16 @@ router.get('/google',
 router.get('/google/callback',
     passport.authenticate('google', {failureRedirect: '/login'}),
     function (req, res) {
-        res.redirect('/profile');
+        res.cookie('musicifyLogin', req.user.musicifyAccessToken);
+        console.log("\n musicifyAccessToken Cookie set.\n")
+        res.redirect('/home');
     });
+
+
+
+
+
+
 // var google = require('googleapis');
 //google auth variables
 // var youtube = google.youtube({

@@ -9,6 +9,7 @@ var UserSchema = new mongoose.Schema({
     lastName: String,
     email: String,
     createdAt: Date,
+    musicifyAccessToken: String,
     accessToken : String,
     refreshToken : {
         access_token: String,
