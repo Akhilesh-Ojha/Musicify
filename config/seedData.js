@@ -17,27 +17,28 @@ var email = ['crobles@gmail.com', 'ullman@outlook.com', 'calin@sbcglobal.net',
     'studyabr@aol.com'];
 
 function seedDB() {
-        for (var i =0 ; i < 10 ; i++){
-            var User = new User();
-            User.provider= "google";
-            User.firstName = firstname[Math.floor((Math.random() * 14) + 1)];
-            User.lastName = lastName[Math.floor((Math.random() * 13) + 1)];
-            User.email = email[Math.floor((Math.random() * 9) + 1)];
-            oAuth_id = Math.floor((Math.random() * 1000000000000000000000) + 1);
-            while(oAuth_id_arr.indexOf(oAuth_id) == -1){
+            for (var i =0 ; i < 10 ; i++){
                 oAuth_id = Math.floor((Math.random() * 1000000000000000000000) + 1);
-            }
-            oAuth_id_arr.push(oAuth_id);
-            User.oAuth_id = oAuth_id;
-            User.save(function (err , createdUser){
-                if (err) {
-                    console.log(err);  // handle errors!
-                } else {
-                    console.log("saving user ..." + createdUser);
-
+                while(oAuth_id_arr.indexOf(oAuth_id) == -1){
+                    oAuth_id = Math.floor((Math.random() * 1000000000000000000000) + 1);
                 }
-            });
-        }
+                oAuth_id_arr.push(oAuth_id);
+                var User = new User({
+                    provider : "google",
+                    firstName : firstname[Math.floor((Math.random() * 14) + 1)],
+                    lastName : lastName[Math.floor((Math.random() * 13) + 1)],
+                    email : email[Math.floor((Math.random() * 9) + 1)],
+                    oAuth_id : oAuth_id
+                });
+                User.save(function (err , createdUser){
+                    if (err) {
+                        console.log(err);  // handle errors!
+                    } else {
+                        console.log("saving user ..." + createdUser);
+
+                    }
+                });
+            }
     }
 
     module.exports = seedDB;
