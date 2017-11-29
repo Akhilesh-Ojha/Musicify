@@ -8,4 +8,14 @@ middlewareObj.ensureAuthenticated = function(req, res, next) {
     res.redirect('/login');
 };
 
+middlewareObj.checkCookie = function (req, res, next) {
+    if(req.cookies.musicifyLogin && req.user){
+        console.log("musicifyLogin Cookie present..\n");
+        return next();
+    }
+    res.redirect('/login');
+}
+
+
+
 module.exports = middlewareObj;

@@ -9,13 +9,19 @@ var UserSchema = new mongoose.Schema({
     lastName: String,
     email: String,
     createdAt: Date,
+    musicifyAccessToken: String,
     accessToken : String,
     refreshToken : {
         access_token: String,
         expires_in : Number,
         id_token : String,
         token_type : String
-    }
+    },
+    friends : [
+        {
+            oAuth_id : String
+        }
+    ]
 });
 
 
