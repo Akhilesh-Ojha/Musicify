@@ -8,7 +8,7 @@ module.exports = {
         cookieKey : "agam"
     },
     crypto: {
-        algorithm : 'aes-256-cbc',
+        algorithm : 'aes-128-cbc',
         key : 'musicifypass'
     }
 };

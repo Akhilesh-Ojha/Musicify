@@ -22,7 +22,7 @@ app.use(cookieSession({
 
 app.use(cookieParser());
 
-//initialese passport
+//initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
 
