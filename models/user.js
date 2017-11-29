@@ -16,7 +16,12 @@ var UserSchema = new mongoose.Schema({
         expires_in : Number,
         id_token : String,
         token_type : String
-    }
+    },
+    friends : [
+        {
+            oAuth_id : String
+        }
+    ]
 });
 
 

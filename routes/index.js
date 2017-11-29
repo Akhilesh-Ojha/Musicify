@@ -32,6 +32,7 @@ router.get('/login', function (req, res) {
 });
 
 router.get('/profile',middleware.ensureAuthenticated, function (req, res) {
+
     var oauth2Client = new OAuth2(
         keys.google.clientID,
         keys.google.clientSecret ,
@@ -66,7 +67,6 @@ router.get('/profile',middleware.ensureAuthenticated, function (req, res) {
             console.log('Status code: ' + response.statusCode);
         }
     });
-
 });
 
 router.get('/home', function (req, res) {
