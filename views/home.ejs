@@ -2,26 +2,50 @@
 
 
 <html>
-    <head>
-        <title>Musicify</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
-    </head>
-    <body>
-    <div class="container">
-        <h1>Welcome <%= user.firstName %></h1>
-        <a href="/logout"><button style="display: inline;">Logout</button></a>
-    </div>
-    </body>
 <head>
+
     <title>Musicify</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+
+    <!--for jquery autocomplete include these three files-->
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+
+    <link rel="stylesheet" href="../scripts/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../scripts/vendor/semantic-ui/dist/semantic.min.css">
+
 </head>
+
 <body>
-<div class="container">
-    <h1>Welcome <%= user.firstName %></h1>
-    <a href="/logout"><button style="display: inline;">Logout</button></a>
+
+<div class="ui secondary  menu">
+    <a class="active item">
+        Home
+    </a>
+    <a class="item" href="/users/search">
+        Friends
+    </a>
+    <div class="right menu">
+        <div class="item">
+            <div class="ui icon input">
+                <input id="search_video" type="text" placeholder="Search videos..."
+                       onkeyup="searchVideo(this.value)">
+                <i class="search link icon"></i>
+            </div>
+        </div>
+        <a class="ui item" href="/logout">
+            Logout
+        </a>
+    </div>
 </div>
+
+<div class="container">
+
+
+</div>
+<script src="../scripts/helper/youtubeSearch.js"></script>
 </body>
 </html>

@@ -12,6 +12,7 @@ router.get('/', function (req, res, next) {
 router.get('/search', middleware.ensureAuthenticated, function (req, res) {
     //document.getElementById("heading").innerHTML = "What you doing";
     console.log(req.query.q);
+<<<<<<< HEAD
     var obj = {params : req.query.q, str: 'abc'+req.query.q};
     /*User.find({firstName: "/.*" + req.query.q + ".*!/"}, function (err, list) {
          if (err) {
@@ -70,6 +71,16 @@ router.get('/friendSearch/:q', function (req, res) {
 
        // }
    // });
+=======
+    User.find({"firstName": "/" + "ak" + "/i"}, function (err, list) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(list);
+        }
+    });
+    res.render('search');
+>>>>>>> b9d1fecaee6b319ac321627ede89933dfac518a9
 });
 
 
