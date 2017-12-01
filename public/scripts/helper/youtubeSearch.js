@@ -1,11 +1,4 @@
 alert("connected");
-var google = require('googleapis');
-var keys = require('../config/keys');
-var query;
-var youtube = google.youtube({
-    version: 'v3',
-    auth: keys.google.apiKey
-});
 
 function searchVideo(q) {
     var query = q;

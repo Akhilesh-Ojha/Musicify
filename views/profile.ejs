@@ -1,15 +1,113 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.13/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"/>
+        <script type="text/javascript" src="https://germini.info/semantic/dimmer.js"></script>
+
     </head>
     <body>
-    <div class="ui container">
-        <h1>Welcome! <%= user.displayName %></h1>
-        Name: sss
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="ui grid">
+        <div class="five wide column">
+            <div class="ui special cards">
+                <div class="card">
+                    <div class="blurring dimmable image">
+                        <div class="ui dimmer">
+                            <div class="content">
+                                <div class="center">
+                                    <div class="ui inverted button" id="follow" onclick="
+                                    addFriend(123,this.innerHTML)">Follow</div>
+                                </div>
+                            </div>
+                        </div>
+                        <img src="/assets/matthew.png" alt = "Profile picture">
+                    </div>
+                    <div class="content">
+                        <a class="header">Name</a>
+                        <div class="meta">
+                            <span class="date">Status</span>
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <!--<a>-->
+                            <!--<i class="users icon"></i>-->
+                            <!--2 Members-->
+                        <!--</a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="eleven wide column">
+
+            <p>My Playlist</p>
+            <div class="ui special cards">
+                <div class="card">
+                    <div class="blurring dimmable image">
+                        <div class="ui dimmer">
+                            <div class="content">
+                                <div class="center">
+                                    <div class="ui inverted button">Play</div>
+                                    <div class="ui inverted button">Steal</div>
+                                </div>
+                            </div>
+                        </div>
+                        <img src="/assets/matthew.png">
+                    </div>
+                    <div class="content">
+                        <a class="header">Road Trip</a>
+                        <div class="meta">
+                            <span class="date">Create in Sep 2014</span>
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <a>
+                            <i class="music icon"></i>
+                            20 songs
+                        </a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="blurring dimmable image">
+                        <div class="ui  dimmer">
+                            <div class="content">
+                                <div class="center">
+                                    <div class="ui inverted button">Play</div>
+                                    <div class="ui inverted button">Steal</div>
+                                </div>
+                            </div>
+                        </div>
+                        <img src="/assets/matthew.png">
+                    </div>
+                    <div class="content">
+                        <a class="header">Coding</a>
+                        <div class="meta">
+                            <span class="date">Create in Aug 2014</span>
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <a>
+                            <i class="music icon"></i>
+                            10 Songs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="/scripts/helper/profile.js"></script>
+    <script>
+        $('.special.cards .image').dimmer({
+            on: 'hover'
+        });
+    </script>
 
     </body>
 </html>
