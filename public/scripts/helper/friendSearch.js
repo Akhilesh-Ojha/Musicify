@@ -8,6 +8,7 @@ function search(q) {
         type: "GET",
         url: "/users/search?q="+q,
         success: function (data) {
+
         }
     });
 }

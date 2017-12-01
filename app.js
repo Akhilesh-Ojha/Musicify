@@ -9,9 +9,12 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var seedDB = require('./config/seedData');
+
+
 var indexRoutes = require('./routes/index');
 var usersRoutes = require('./routes/users');
 var authRoutes = require('./routes/auth');
+var searchRoutes = require('./routes/search');
 
 var app = express();
 
@@ -43,7 +46,7 @@ mongoose.connect('mongodb://localhost/MusicifyDB', {
 app.use('/', indexRoutes);
 app.use('/users', usersRoutes);
 app.use('/auth', authRoutes);
-
+app.use('/search', searchRoutes);
 
 // view engine setup
 app.set('view engine', 'ejs');

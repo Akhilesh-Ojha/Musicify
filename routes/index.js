@@ -8,6 +8,10 @@ var passport = require('passport');
 var encryption = require('../config/encryption');
 var User = require('../models/user');
 
+var youtube = google.youtube({
+    version: 'v3',
+    auth: keys.google.apiKey
+});
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -70,6 +74,32 @@ router.get('/profile',middleware.ensureAuthenticated, function (req, res) {
 
 router.get('/home', function (req, res) {
     res.render('home', { user: req.user });
+});
+router.get('/search',middleware.ensureAuthenticated,function (req,res) {
+        console.log("query:" + req.query.q);
+    //     youtube.search.list({
+    //     part: 'snippet',
+    //     q: req.query.q,
+    //     type : 'video'
+    // }, function(err, data, response) {
+    //     if (err) {
+    //         console.error('Error: ' + err);
+    //         res.json({
+    //             status: "error"
+    //         });
+    //     }
+    //     if (data) {
+    //         console.log(data);
+    //         // res.json({
+    //         //     status: "ok",
+    //         //     data: data
+    //         // });
+    //         // res.send(res.json({
+    //         //     status: "ok",
+    //         //     data: data
+    //         // }));
+    //     }
+    // });
 });
 
 router.get('/logout', function (req, res) {
