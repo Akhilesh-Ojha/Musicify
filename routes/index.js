@@ -32,7 +32,6 @@ router.get('/login', function (req, res) {
 });
 
 router.get('/profile',middleware.ensureAuthenticated, function (req, res) {
-
     var oauth2Client = new OAuth2(
         keys.google.clientID,
         keys.google.clientSecret ,
@@ -68,6 +67,9 @@ router.get('/profile',middleware.ensureAuthenticated, function (req, res) {
         }
     });
 });
+
+
+
 
 router.get('/home', function (req, res) {
     res.render('home', { user: req.user });

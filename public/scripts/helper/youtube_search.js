@@ -38,15 +38,15 @@ function  youtubeSearch() {
 
 }
 
-// console.log("here");
-// $('input #search_query').keyup( function () {
-//     console.log("here");
-//     if(this.value.length < 4)
-//         return
-//     else {
-//         console.log("value :" +value);
-//         $('#output').val(this.value);
-//     }
-// });
+console.log("here");
+$('input #search_query').keyup( function () {
+    console.log("here");
+    if(this.value.length < 4)
+        return
+    else {
+        console.log("value :" +value);
+        $('#output').val(this.value);
+    }
+});
 
 
