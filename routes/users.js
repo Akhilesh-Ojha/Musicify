@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
 router.get('/search', middleware.ensureAuthenticated, function (req, res) {
     //document.getElementById("heading").innerHTML = "What you doing";
     console.log(req.query.q);
-    User.find({"firstName": "/" + "ak" + "/i"}, function (err, list) {
+    User.find({firstName: "/." + "A"+ "./"}, function (err, list) {
         if (err) {
             console.log(err);
         } else {
@@ -32,7 +32,6 @@ router.get('/addFriend',middleware.ensureAuthenticated,function (req, res) {
    };
 
    if(req.query.follow === "1"){
-        console.log("here");
        User.update({oAuth_id: id}, {$addToSet:{friends:friend_id}}, function (err, updated) {
            if(err){
                console.log("error:"+error);
@@ -41,7 +40,7 @@ router.get('/addFriend',middleware.ensureAuthenticated,function (req, res) {
            }
        });
    }else{
-       console.log("herrw");
+
        User.update({oAuth_id: id}, {$pull:{friends:friend_id}}, function (err, updated) {
            if(err){
                console.log("error:"+error);
