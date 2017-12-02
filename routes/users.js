@@ -12,7 +12,6 @@ router.get('/', function (req, res, next) {
 router.get('/search', middleware.ensureAuthenticated, function (req, res) {
     //document.getElementById("heading").innerHTML = "What you doing";
     console.log(req.query.q);
-<<<<<<< HEAD
     var obj = {params : req.query.q, str: 'abc'+req.query.q};
     /*User.find({firstName: "/.*" + req.query.q + ".*!/"}, function (err, list) {
          if (err) {
@@ -27,28 +26,28 @@ router.get('/search', middleware.ensureAuthenticated, function (req, res) {
 });
 
 router.get('/friendSearch/:q', function (req, res) {
-    console.log("q= " + req.params.q+ " in friendSearch route\n");
+    console.log("q= " + req.params.q + " in friendSearch route\n");
     var result = [];
     User.find({firstName: "/.*" + req.params.q + ".*/"}, function (err, list) {
-        if(err){
+        if (err) {
             console.log(err);
         }
-        else{
+        else {
             console.log("In else");
             list.toArray().forEach(function (item) {
                 console.log("In user.find");
                 console.log(item);
-                console.log(item.firstName + item.lastName+"\n");
+                console.log(item.firstName + item.lastName + "\n");
                 result.push(item.firstName + item.lastName);
                 console.log(result);
             });
 
         }
     });
-
+});
 
     //console.log(result);
-    res.send(result);
+    //res.send(result);
     /*User.find({firstName: "/.*" + req.params.q + ".*!/"}, function (err, list) {
         if (err) {
             console.log(err);
@@ -71,7 +70,9 @@ router.get('/friendSearch/:q', function (req, res) {
 
        // }
    // });
-=======
+
+
+/*
     User.find({"firstName": "/" + "ak" + "/i"}, function (err, list) {
         if (err) {
             console.log(err);
@@ -80,8 +81,9 @@ router.get('/friendSearch/:q', function (req, res) {
         }
     });
     res.render('search');
->>>>>>> b9d1fecaee6b319ac321627ede89933dfac518a9
+
 });
 
+*/
 
 module.exports = router;

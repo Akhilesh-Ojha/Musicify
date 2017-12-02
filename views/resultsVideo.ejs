@@ -7,21 +7,20 @@
     <title>Musicify</title>
 
     <!--for jquery autocomplete include these three files-->
-
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
-    <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.13/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
 
 
-    <link rel="stylesheet" href="../public/scripts/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../public/scripts/vendor/semantic-ui/dist/semantic.min.css">
+
 
 </head>
 
 <body>
-
 <div class="ui secondary  menu">
     <a class="active item">
         Home
@@ -29,6 +28,7 @@
     <a class="item" href="/users/search">
         Friends
     </a>
+    <a><%= results.nextPageToken%></a>
     <div class="right menu">
         <div class="item">
             <div class="ui icon input">
@@ -42,24 +42,49 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="ui three column grid">
+<div class="ui raised container" style="padding-bottom: 500px;">
+    <div class="ui three column grid" style="padding: 50px auto;">
         <% results.items.forEach(function (item) { %>
         <div class="column">
-            <div class="ui fluid card">
+            <a class="ui link card" href="https://youtu.be/<%= item.id.videoId %>">
                 <div class="image">
                     <img src="<%= item.snippet.thumbnails.high.url%>">
                 </div>
                 <div class="content">
-                    <a class="header"><%= item.title%>Daniel Louise</a>
+                    <div class="header">
+                        <%= item.snippet.title %>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
          <%})%>
     </div>
 
 
-</div>
 
+    <div class="one column row">
+        <div class="column">
+
+            <% if(results.prevPageToken) { %>
+            <button id="prevButton" class="ui left labeled left floated icon button" onclick="prevPage(this.data)">
+                <i class="left arrow icon"></i>
+                Previous
+            </button>
+            <% } %>
+
+
+            <% if(results.nextPageToken) { %>
+                <a href="<%= .url%>/next/<%= results.nextPageToken %>" id="nextButton" class="ui right labeled right floated icon button">
+                    <i class="right arrow icon"></i>
+                    Next
+                </a>
+            <% } %>
+
+        </div>
+    </div>
+
+
+</div>
+<script type="text/javascript" src="/scripts/helper/youtubeSearch.js"></script>
 </body>
 </html>

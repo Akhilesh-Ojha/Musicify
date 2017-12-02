@@ -1,11 +1,4 @@
-alert("connected");
-var google = require('googleapis');
-var keys = require('../config/keys');
-var query;
-var youtube = google.youtube({
-    version: 'v3',
-    auth: keys.google.apiKey
-});
+alert("Connected");
 
 function searchVideo(q) {
     var query = q;
@@ -61,4 +54,34 @@ function searchVideo(q) {
 
     });
 
+}
+
+/*
+
+    $("#nextButton").click(function () {
+        var currentURL = window.location.href;
+        console.log(currentURL);
+        location.href = currentURL + "/next/" + results.nextPageToken;
+    });
+
+
+    $("#prevButton").click(function () {
+        var currentURL = window.location.href;
+        console.log(currentURL);
+        location.href = currentURL + "/prev/" + results.prevPageToken;
+    });
+*/
+
+
+function nextPage(nextPageToken){
+    console.log("in nextPAge function, nextPageToken-- "+ nextPageToken);
+    var currentURL = window.location.href;
+    console.log(currentURL);
+    location.href = currentURL + "next/" + nextPageToken;
+}
+
+
+function prevPage(prevPageToken){
+    var currentURL = window.location.href;
+    location.href = currentURL + "prev/" + prevPageToken;
 }
