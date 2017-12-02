@@ -4,6 +4,7 @@ var User = require('../models/user');
 var keys = require('../config/keys');
 var google = require('googleapis');
 
+
 var query;
 var youtube = google.youtube({
     version: 'v3',
@@ -12,6 +13,7 @@ var youtube = google.youtube({
 
 
 var router = express.Router();
+
 
 router.get('/video/results/:search_query', middleware.ensureAuthenticated, function (req, res) {
     query = req.params.search_query;

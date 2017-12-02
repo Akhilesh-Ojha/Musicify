@@ -83,6 +83,40 @@ router.get('/friendSearch/:q', function (req, res) {
     res.render('search');
 
 });
+router.get('/profile/:name',middleware.ensureAuthenticated, function (req, res) {
+   res.render('profile');
+});
+
+router.get('/addFriend',middleware.ensureAuthenticated,function (req, res) {
+   console.log(req.query.q+"follow"+req.query.follow);
+   var id = "552515916436987050000";
+   var friend_id = {
+       oAuth_id: "915236895140184200000"
+   };
+
+   if(req.query.follow === "1"){
+        console.log("here");
+       User.update({oAuth_id: id}, {$addToSet:{friends:friend_id}}, function (err, updated) {
+           if(err){
+               console.log("error:"+error);
+           }else{
+               console.log("user:"+updated)
+           }
+       });
+   }else{
+       console.log("herrw");
+       User.update({oAuth_id: id}, {$pull:{friends:friend_id}}, function (err, updated) {
+           if(err){
+               console.log("error:"+error);
+           }else{
+               console.log("user:"+updated);
+           }
+       });
+   }
+
+
+
+});
 
 */
 
