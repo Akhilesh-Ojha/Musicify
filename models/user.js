@@ -21,7 +21,8 @@ var UserSchema = new mongoose.Schema({
         {
             oAuth_id : String
         }
-    ]
+    ],
+    isFriend:Boolean
 });
 
 

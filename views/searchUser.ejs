@@ -1,0 +1,49 @@
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.13/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"/>
+    <script type="text/javascript" src="https://germini.info/semantic/dimmer.js"></script>
+</head>
+<body>
+
+<div class="ui menu fixed stackable">
+    <div class="ui four column stackable grid container" style="margin:0;">
+        <a href="/home" class="ui item two wide column">
+            Home
+        </a>
+        <a href="/users/search" class="ui active item two wide column">
+            Friends
+        </a>
+        <div class="ui search item ten wide column">
+            <div class="ui icon input">
+                <input id="friendSearch" type="text" placeholder="Search members..."
+                       onkeyup="search(this.value)">
+                <i class="search link icon"></i>
+            </div>
+        </div>
+        <div class="ui item two wide column">
+            <a href="/logout">
+                Logout
+            </a>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+
+<div class="ui link cards grid" id="user_placeholder">
+
+</div>
+
+
+<script src="../scripts/helper/friendSearch.js"></script>
+</body>
+</html>
+

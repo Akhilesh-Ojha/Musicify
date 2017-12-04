@@ -1,5 +1,3 @@
-
-
 function seedDB() {
     var data =[];
     var User = require ('../models/user');
@@ -17,13 +15,14 @@ function seedDB() {
         'qrczak@yahoo.ca', 'matty@sbcglobal.net', 'jbryan@mac.com',
         'tamas@mac.com', 'ingolfke@verizon.net', 'brickbat@yahoo.com',
         'studyabr@aol.com'];
-    for (var i = 0 ; i < 10 ; i++){
+    for (var i = 0 ; i < 30 ; i++){
         var obj = {
             provider : "google",
             firstName : firstname[Math.floor((Math.random() * 14) + 1)],
             lastName : lastName[Math.floor((Math.random() * 13) + 1)],
             email : email[Math.floor((Math.random() * 9) + 1)],
-            oAuth_id :  Math.floor((Math.random() * 1000000000000000000000) + 1)
+            oAuth_id :  Math.floor((Math.random() * 1000000000000000000000) + 1),
+            isFriend : false
         };
         data.push(obj);
     }
@@ -38,10 +37,6 @@ function seedDB() {
 
         })
     })
-    
-    }
+
+}
 module.exports = seedDB;
-
-
-
-
