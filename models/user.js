@@ -5,6 +5,7 @@ var UserSchema = new mongoose.Schema({
     provider:String,
     oAuth_id:String,
     image:String,
+    displayName:String,
     firstName: String,
     lastName: String,
     email: String,
@@ -17,9 +18,20 @@ var UserSchema = new mongoose.Schema({
         id_token : String,
         token_type : String
     },
-    friends : [
+    followers:[
         {
-            oAuth_id : String
+            oAuth_id:String
+        }
+    ],
+    following:[
+        {
+            oAuthi_id:String
+        }
+    ],
+    playlist:[
+        {
+            id : String,
+
         }
     ],
     isFriend:Boolean

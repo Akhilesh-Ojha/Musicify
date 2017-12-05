@@ -15,7 +15,8 @@ var indexRoutes = require('./routes/index');
 var usersRoutes = require('./routes/users');
 var authRoutes = require('./routes/auth');
 var searchRoutes = require('./routes/search');
-
+var viewRoutes = require('./routes/view');
+var actionRoutes = require('./routes/action');
 var app = express();
 
 
@@ -47,6 +48,8 @@ app.use('/', indexRoutes);
 app.use('/users', usersRoutes);
 app.use('/auth', authRoutes);
 app.use('/search', searchRoutes);
+app.use('/view', viewRoutes);
+app.use('/action', actionRoutes);
 
 // view engine setup
 app.set('view engine', 'ejs');

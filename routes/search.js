@@ -15,98 +15,46 @@ var youtube = google.youtube({
 var router = express.Router();
 
 
-router.get('/video/results/:search_query', middleware.ensureAuthenticated, function (req, res) {
-    query = req.params.search_query;
-    console.log(query);
-    var dataFinal;
+router.get('/user', middleware.ensureAuthenticated, function (req, res) {
+   var displayName = req.query.displayName;
+   User.find({displayName: {'$regex': displayName, '$options' : 'i'}}, function (err, result) {
+       if(err){
+           res.json({
+               status: "error",
+               data: err
+           })
+       }
+       else{
+           console.log(result);
+           res.json({
+               status: "ok",
+               data : result
+           })
+       }
+   })
+});
+
+router.get('/music', middleware.ensureAuthenticated, function (req, res) {
+   search_query = req.query.name;
     youtube.search.list({
-        maxResults: 9,
+        maxResults: 18,
         part: 'snippet',
         q: query,
         type: 'video'
-    }, function (err, data, response) {
+    }, function (err, data) {
         if (err) {
-            console.error('Error: ' + err);
             res.json({
-                status: "error"
+                status: "error",
+                data : err
             });
         }
         if (data) {
-            // console.log(typeof data);
-            dataFinal = data;
-
-
-            //res.send(dataFinal);
-
-            console.log(dataFinal);
-            res.render('resultsVideo', {results: dataFinal})
-            //res.render('resultsVideo',{results:data})
+            res.json({
+                status: "ok",
+                data : data
+            })
         }
     });
 });
 
-
-router.get('/video/results/:search_query/next/:nextPageToken', middleware.ensureAuthenticated, function (req, res) {
-    var nextPageToken = req.params.nextPageToken;
-    console.log(nextPageToken);
-    var dataFinal;
-    youtube.search.list({
-        nextPageToken: "'"+ nextPageToken+"'",
-        maxResults: 12,
-        part: 'snippet',
-        q: query,
-        type: 'video'
-    }, function (err, data, response) {
-        if (err) {
-            console.error('Error: ' + err);
-            res.json({
-                status: "error"
-            });
-        }
-        if (data) {
-            // console.log(typeof data);
-            dataFinal = data;
-
-
-            //res.send(dataFinal);
-
-            console.log(dataFinal);
-            res.render('resultsVideo', {results: dataFinal})
-            //res.render('resultsVideo',{results:data})
-        }
-    });
-});
-
-router.get('/video/results/:search_query/prev/:prevPageToken', middleware.ensureAuthenticated, function (req, res) {
-    var prevPageToken = req.params.prevPageToken;
-    console.log(prevPageToken);
-    var dataFinal;
-    youtube.search.list({
-        prevPageToken: "'"+prevPageToken+"'",
-        maxResults: 9,
-        part: 'snippet',
-        q: query,
-        type: 'video'
-    }, function (err, data, response) {
-        if (err) {
-            console.error('Error: ' + err);
-            res.json({
-                status: "error"
-            });
-        }
-        if (data) {
-            // console.log(typeof data);
-            dataFinal = data;
-
-
-            //res.send(dataFinal);
-
-            //console.log(dataFinal);
-            res.render('resultsVideo', {results: dataFinal})
-            //res.render('resultsVideo',{results:data})
-        }
-    });
-});
-
-
-    module.exports = router;
+module.exports = router;

@@ -4,7 +4,7 @@ const User = require('../models/user');
 const keys = require('./keys');
 const encryption = require('./encryption');
 
-
+var firstName, lastName,displayName;
 passport.serializeUser(function (user, done) {
     done(null, user._id);
 });
@@ -24,29 +24,19 @@ passport.use(
             clientSecret: keys.google.clientSecret,
             callbackURL: keys.google.callbackURL
         }, function (accessToken, rand, refreshToken, profile, done) {
-            console.log("User Google----\n", profile);
-            console.log("Access Token---\n", accessToken);
-            console.log("Refresh Token----\n", refreshToken);
+            // console.log("User Google----\n", profile);
+            // console.log("Access Token---\n", accessToken);
+            // console.log("Refresh Token----\n", refreshToken);
             if (profile.name) {
                 firstName = profile.name.givenName;
                 lastName = profile.name.familyName;
+                displayName = firstName + " "+ lastName;
             }
             else {
                 firstName = profile.displayname;
                 lastName = "";
+                displayName = firstName + " "+ lastName;
             }
-            // User.findOneAndUpdate({oAuth_id: profile.id}, {
-            //     $set: {
-            //         accessToken: accessToken,
-            //         refreshToken: refreshToken
-            //     }
-            // }, function (err, user) {
-            //     if (err) {
-            //         console.log(err);
-            //     } else {
-            //
-            //     }
-            // });
 
             User.findOne({oAuth_id: profile.id}, function (err, user) {
                 if (err) {
@@ -62,6 +52,7 @@ passport.use(
                         lastName: lastName,
                         email: profile.email,
                         image: profile._json.image.url,
+                        displayName: displayName,
                         createdAt: Date.now(),
                         musicifyAccessToken: encryption.encrypt(profile.id),
                         accessToken: encryption.encrypt(accessToken),

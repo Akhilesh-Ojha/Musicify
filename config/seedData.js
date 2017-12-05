@@ -6,7 +6,7 @@ function seedDB() {
         'Tushar','Amrit','Souryadeep',
         'Nitish','Sanchita','Aishwarya',
         'Malaika','Reha','Ashish'];
-    var lastName = ['Gupta','Ojha','Singh',
+    var lastname = ['Gupta','Ojha','Singh',
         'Ojha','Karnwal','Goel','Jaiswal'
         ,'Kashyap','Vardhan','Mukherjee'
         ,'Pandey','Ghosh','Sharma'
@@ -15,11 +15,15 @@ function seedDB() {
         'qrczak@yahoo.ca', 'matty@sbcglobal.net', 'jbryan@mac.com',
         'tamas@mac.com', 'ingolfke@verizon.net', 'brickbat@yahoo.com',
         'studyabr@aol.com'];
-    for (var i = 0 ; i < 30 ; i++){
+    for (var i = 0 ; i < 50 ; i++){
+        var firstName = firstname[Math.floor((Math.random() * 14) + 1)];
+        var lastName = lastname[Math.floor((Math.random() * 13) + 1)];
+        var displayName = firstName + " " + lastName;
         var obj = {
             provider : "google",
-            firstName : firstname[Math.floor((Math.random() * 14) + 1)],
-            lastName : lastName[Math.floor((Math.random() * 13) + 1)],
+            firstName : firstName,
+            lastName : lastName,
+            displayName : displayName,
             email : email[Math.floor((Math.random() * 9) + 1)],
             oAuth_id :  Math.floor((Math.random() * 1000000000000000000000) + 1),
             isFriend : false
