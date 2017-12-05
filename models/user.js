@@ -20,18 +20,20 @@ var UserSchema = new mongoose.Schema({
     },
     followers:[
         {
-            oAuth_id:String
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         }
     ],
     following:[
         {
-            oAuthi_id:String
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         }
     ],
     playlist:[
         {
-            id : String,
-
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Playlist"
         }
     ],
     isFriend:Boolean
