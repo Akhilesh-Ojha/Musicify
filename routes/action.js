@@ -85,7 +85,8 @@ router.get('/create/playlist', middleware.ensureAuthenticated, function (req, re
    var genre = req.query.genre;
    var image = req.query.image;
 
-   var user_id = req.user.id;
+   var user_id = req.user._id;
+   console.log(user_id);
 
 
    Playlist.create({
@@ -102,7 +103,7 @@ router.get('/create/playlist', middleware.ensureAuthenticated, function (req, re
            })
        }
        else{
-           User.findOne({id : user_id}, function (err, foundUser) {
+           User.findOne(user_id, function (err, foundUser) {
                if(err){
                    res.json({
                        status:"error",
@@ -110,6 +111,7 @@ router.get('/create/playlist', middleware.ensureAuthenticated, function (req, re
                    })
                }
                else{
+                   playlist.save();
                    foundUser.playlist.push(playlist);
                    foundUser.save(function (err, result ) {
                        if (err){
