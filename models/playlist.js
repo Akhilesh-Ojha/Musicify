@@ -5,7 +5,6 @@ var mongoose = require("mongoose");
 var PlaylistSchema = new mongoose.Schema({
     playlist:[
         {
-            id : String,
             image:String,
             name:String,
             description:String,

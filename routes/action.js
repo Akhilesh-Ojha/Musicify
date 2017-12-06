@@ -1,6 +1,7 @@
 var express = require('express');
 var middleware = require('../middlewares/index');
 var User = require('../models/user');
+var Playlist = require('../models/playlist');
 var keys = require('../config/keys');
 
 
@@ -8,41 +9,44 @@ var keys = require('../config/keys');
 var router = express.Router();
 
 router.get('/follow', middleware.ensureAuthenticated, function (req, res) {
-   var follow_id = {
-       oAuth_id: req.query.id
-   };
-   var user_id = req.user.oAuth_id;
-   User.update({oAuth_id:user_id}, {$addToSet: {following: follow_id}}, function (err, result) {
-       if (err){
-           console.log(err);
-       }
-       else {
-           console.log(result);
-       }
-   });
-   var user_id_ob ={
-       oAuth_id:user_id
-   };
-   User.update({oAuth_id:follow_id}, {$addToSet: {followers: user_id_ob}}, function (err, result){
-       if (err){
+    var follow_id = req.query.id;
+    var user_id = req.user.id;
+    User.findOne({id: follow_id}, function (err, followUser) {
+       if(err){
            res.json({
-               status:"error",
+               status: "error",
                data : err
            })
        }
-       else {
+       else{
+           User.findOne({id: user_id}, function (err, user) {
+               followUser.followers.push(user);
+               followUser.save();
+               user.following.push(followUser);
+               user.save(function (err, result) {
+                   if(err){
+                       res.json({
+                           status: "error",
+                           data : err
+                       })
+                   }
+                   else{
+                       res.json({
+                           status:"ok",
+                           data : result
+                       })
+                   }
+               })
 
+           })
        }
-   });
+    });
 
 });
 router.get('/unfollow', middleware.ensureAuthenticated, function (req, res) {
-   var unfollow_id = {
-       oAuth_id: req.query.id
-   };
-   var user_id = req.user.oAuth_id;
-
-   User.update({oAuth_id:user_id},{$pull:{following: unfollow_id}},function (err, result) {
+    var unfollow_id = req.query.id;
+    var user_id = req.user.id;
+    User.findOne({id: unfollow_id}, function (err, unfollowUser) {
         if(err){
             res.json({
                 status: "error",
@@ -50,49 +54,47 @@ router.get('/unfollow', middleware.ensureAuthenticated, function (req, res) {
             })
         }
         else{
-            res.json({
-                status: "ok",
-                data:result
+            User.findOne({id: user_id}, function (err, user) {
+                unfollowUser.followers.pull(user);
+                followUser.save();
+                user.following.pull(unfollowUser);
+                user.save(function (err, result) {
+                    if(err){
+                        res.json({
+                            status: "error",
+                            data : err
+                        })
+                    }
+                    else{
+                        res.json({
+                            status:"ok",
+                            data : result
+                        })
+                    }
+                })
+
             })
         }
     });
-    var user_id_ob ={
-        oAuth_id:user_id
-    };
-   User.update({oAuth_id:unfollow_id.oAuth_id}, {$pull: {followers: user_id_ob}}, function (err, result){
-        if (err){
-            res.json({
-                status:"error",
-                data : err
-            })
-        }
-        else {
-            res.json({
-                status: "ok",
-                data : result
-            })
-        }
-    })
 });
 
 router.get('/create/playlist', middleware.ensureAuthenticated, function (req, res) {
-   var id = req.query.id;
    var name = req.query.name;
    var description = req.query.description;
    var sharing = req.query.sharing;
-    var genre = req.query.genre;
-   var user_id = req.user.oAuth_id;
+   var genre = req.query.genre;
+   var image = req.query.image;
 
-   User.update({oAuth_id: user_id}, {
-                                    $push : {
-                                            playlist:{
-                                                id:id ,
-                                                name:name,
-                                                description:description,
-                                                sharing : sharing
-                                            }
-                                    }
-   }, function (err, result) {
+   var user_id = req.user.id;
+
+
+   Playlist.create({
+       image: image,
+       name :name,
+       description : description,
+       sharing: sharing,
+       genre : genre
+   }, function (err, playlist) {
        if(err){
            res.json({
                status:"error",
@@ -100,12 +102,35 @@ router.get('/create/playlist', middleware.ensureAuthenticated, function (req, re
            })
        }
        else{
-           res.json({
-               status: "ok",
-               data:result
+           User.findOne({id : user_id}, function (err, foundUser) {
+               if(err){
+                   res.json({
+                       status:"error",
+                       data: err
+                   })
+               }
+               else{
+                   foundUser.playlist.push(playlist);
+                   foundUser.save(function (err, result ) {
+                       if (err){
+                           res.json({
+                               status:"error",
+                               data: err
+                           })
+                       }
+                       else{
+                           res.json({
+                               status:"ok",
+                               data : result
+                           })
+                       }
+                   })
+               }
            })
        }
    });
+
+
 });
 
 router.get('/save/playlist', middleware.ensureAuthenticated, function (req, res) {

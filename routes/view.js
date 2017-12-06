@@ -10,7 +10,7 @@ var router = express.Router();
 
 router.get('/profile', middleware.ensureAuthenticated, function (req, res) {
    var profile_id = req.query.id;
-   User.findOne({oAuth_id: profile_id}, function (err,result) {
+   User.findOne({id: profile_id}, function (err,result) {
        if(err){
            res.json({
                status: "error",
